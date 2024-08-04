@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "name": "데님 청바지",
+    "price": 49000,
+    "imgSrc": "http://localhost:4000/imgs/bluejeans.jpg"
+  },
+  {
+    "id": 2,
+    "name": "울 코트",
+    "price": 43000,
+    "imgSrc": "http://localhost:4000/imgs/coat.jpg"
+  },
+  {
+    "id": 3,
+    "name": "원피스",
+    "price": 39000,
+    "imgSrc": "http://localhost:4000/imgs/dress.jpg"
+  },
+  {
+    "id": 4,
+    "name": "그레이 후드티",
+    "price": 69000,
+    "imgSrc": "http://localhost:4000/imgs/hoodie.jpg"
+  },
+  {
+    "id": 5,
+    "name": "레더 자켓",
+    "price": 87000,
+    "imgSrc": "http://localhost:4000/imgs/jackets.jpg"
+  },
+  {
+    "id": 6,
+    "name": "화이트 셔츠",
+    "price": 94000,
+    "imgSrc": "http://localhost:4000/imgs/shirt.jpg"
+  },
+  {
+    "id": 7,
+    "name": "반바지",
+    "price": 80000,
+    "imgSrc": "http://localhost:4000/imgs/shorts.jpg"
+  },
+  {
+    "id": 8,
+    "name": "니트 스웨터",
+    "price": 82000,
+    "imgSrc": "http://localhost:4000/imgs/sweater.jpg"
+  },
+  {
+    "id": 9,
+    "name": "맨투맨",
+    "price": 36000,
+    "imgSrc": "http://localhost:4000/imgs/sweatshirt.jpg"
+  },
+  {
+    "id": 10,
+    "name": "화이트 티셔츠",
+    "price": 12000,
+    "imgSrc": "http://localhost:4000/imgs/tshirts.jpg"
+  },
+  {
+    "id": 11,
+    "name": "블랙 진",
+    "price": 11000,
+    "imgSrc": "http://localhost:4000/imgs/bluejeans.jpg"
+  },
+  {
+    "id": 12,
+    "name": "트렌치 코트",
+    "price": 43000,
+    "imgSrc": "http://localhost:4000/imgs/coat.jpg"
+  },
+  {
+    "id": 13,
+    "name": "니트 원피스",
+    "price": 114000,
+    "imgSrc": "http://localhost:4000/imgs/dress.jpg"
+  },
+  {
+    "id": 14,
+    "name": "블랙 후드티",
+    "price": 26000,
+    "imgSrc": "http://localhost:4000/imgs/hoodie.jpg"
+  },
+  {
+    "id": 15,
+    "name": "데님 자켓",
+    "price": 83000,
+    "imgSrc": "http://localhost:4000/imgs/jackets.jpg"
+  },
+  {
+    "id": 16,
+    "name": "체크 셔츠",
+    "price": 119000,
+    "imgSrc": "http://localhost:4000/imgs/shirt.jpg"
+  },
+  {
+    "id": 17,
+    "name": "치노 반바지",
+    "price": 69000,
+    "imgSrc": "http://localhost:4000/imgs/shorts.jpg"
+  },
+  {
+    "id": 18,
+    "name": "케이블 니트",
+    "price": 33000,
+    "imgSrc": "http://localhost:4000/imgs/sweater.jpg"
+  },
+  {
+    "id": 19,
+    "name": "네이비 맨투맨",
+    "price": 31000,
+    "imgSrc": "http://localhost:4000/imgs/sweatshirt.jpg"
+  },
+  {
+    "id": 20,
+    "name": "블랙 티셔츠",
+    "price": 120000,
+    "imgSrc": "http://localhost:4000/imgs/tshirts.jpg"
+  },
+  {
+    "id": 21,
+    "name": "스키니 진",
+    "price": 84000,
+    "imgSrc": "http://localhost:4000/imgs/bluejeans.jpg"
+  },
+  {
+    "id": 22,
+    "name": "더플 코트",
+    "price": 99000,
+    "imgSrc": "http://localhost:4000/imgs/coat.jpg"
+  },
+  {
+    "id": 23,
+    "name": "플리츠 원피스",
+    "price": 30000,
+    "imgSrc": "http://localhost:4000/imgs/dress.jpg"
+  },
+  {
+    "id": 24,
+    "name": "네이비 후드티",
+    "price": 17000,
+    "imgSrc": "http://localhost:4000/imgs/hoodie.jpg"
+  },
+  {
+    "id": 25,
+    "name": "야구 점퍼",
+    "price": 13000,
+    "imgSrc": "http://localhost:4000/imgs/jackets.jpg"
+  },
+  {
+    "id": 26,
+    "name": "옥스포드 셔츠",
+    "price": 144000,
+    "imgSrc": "http://localhost:4000/imgs/shirt.jpg"
+  },
+  {
+    "id": 27,
+    "name": "데님 반바지",
+    "price": 91000,
+    "imgSrc": "http://localhost:4000/imgs/shorts.jpg"
+  },
+  {
+    "id": 28,
+    "name": "터틀넥",
+    "price": 66000,
+    "imgSrc": "http://localhost:4000/imgs/sweater.jpg"
+  },
+  {
+    "id": 29,
+    "name": "그레이 맨투맨",
+    "price": 17000,
+    "imgSrc": "http://localhost:4000/imgs/sweatshirt.jpg"
+  },
+  {
+    "id": 30,
+    "name": "그레이 티셔츠",
+    "price": 88000,
+    "imgSrc": "http://localhost:4000/imgs/tshirts.jpg"
+  },
+  {
+    "id": 31,
+    "name": "와이드 진",
+    "price": 33000,
+    "imgSrc": "http://localhost:4000/imgs/bluejeans.jpg"
+  },
+  {
+    "id": 32,
+    "name": "롱 코트",
+    "price": 59000,
+    "imgSrc": "http://localhost:4000/imgs/coat.jpg"
+  },
+  {
+    "id": 33,
+    "name": "롱 원피스",
+    "price": 125000,
+    "imgSrc": "http://localhost:4000/imgs/dress.jpg"
+  },
+  {
+    "id": 34,
+    "name": "화이트 후드티",
+    "price": 147000,
+    "imgSrc": "http://localhost:4000/imgs/hoodie.jpg"
+  },
+  {
+    "id": 35,
+    "name": "바람막이",
+    "price": 81000,
+    "imgSrc": "http://localhost:4000/imgs/jackets.jpg"
+  },
+  {
+    "id": 36,
+    "name": "린넨 셔츠",
+    "price": 32000,
+    "imgSrc": "http://localhost:4000/imgs/shirt.jpg"
+  },
+  {
+    "id": 37,
+    "name": "숏팬츠",
+    "price": 10000,
+    "imgSrc": "http://localhost:4000/imgs/shorts.jpg"
+  },
+  {
+    "id": 38,
+    "name": "카디건",
+    "price": 135000,
+    "imgSrc": "http://localhost:4000/imgs/sweater.jpg"
+  },
+  {
+    "id": 39,
+    "name": "베이직 맨투맨",
+    "price": 80000,
+    "imgSrc": "http://localhost:4000/imgs/sweatshirt.jpg"
+  },
+  {
+    "id": 40,
+    "name": "반팔 티셔츠",
+    "price": 90000,
+    "imgSrc": "http://localhost:4000/imgs/tshirts.jpg"
+  }
+]
