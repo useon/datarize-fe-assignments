@@ -1,0 +1,47 @@
+:root {
+  --brand: rgb(247, 255, 145);
+  --brand-strong: rgb(235, 246, 108);
+  --ink: #121417;
+  --muted: #5f6b78;
+  --line: rgba(15, 23, 42, 0.12);
+  --font-sans: 'Public Sans', 'Segoe UI', sans-serif;
+  color-scheme: light;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: #f6f7f2;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
