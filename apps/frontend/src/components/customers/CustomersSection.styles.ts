@@ -58,6 +58,28 @@ export const searchBox = css`
   }
 `
 
+export const limitBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  select {
+    min-width: 120px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 14px;
+  }
+`
+
 export const sortBox = css`
   display: flex;
   flex-direction: column;
@@ -125,4 +147,25 @@ export const statusBox = css`
 export const statusError = css`
   background: rgba(255, 210, 210, 0.45);
   color: #7a1f1f;
+`
+
+export const pagination = css`
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+
+  button {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `

@@ -11,14 +11,25 @@ type CustomersSectionProps = {
 const CustomersSection = ({ from, to }: CustomersSectionProps) => {
   const [sortBy, setSortBy] = useState<'asc' | 'desc' | ''>('')
   const [name, setName] = useState('')
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(20)
   const handleSortChange = (value: 'asc' | 'desc' | '') => setSortBy(value)
   const handleNameChange = (value: string) => setName(value)
+  const handleLimitChange = (value: number) => {
+    setLimit(value)
+    setPage(1)
+  }
+  const handlePrevPage = () => setPage((prev) => Math.max(1, prev - 1))
+  const handleNextPage = (totalPages: number) => setPage((prev) => Math.min(totalPages, prev + 1))
   const { data, isLoading, isError, dateReady } = useCustomers({
     from,
     to,
     sortBy: sortBy || undefined,
     name: name.trim() || undefined,
+    page,
+    limit,
   })
+  const totalPages = data?.pagination.totalPages ?? 1
 
   return (
     <div css={styles.section}>
@@ -37,6 +48,18 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
               placeholder="이름을 입력하세요"
               onChange={(event) => handleNameChange(event.target.value)}
             />
+          </div>
+          <div css={styles.limitBox}>
+            <label htmlFor="limit">표시 개수</label>
+            <select
+              id="limit"
+              value={limit}
+              onChange={(event) => handleLimitChange(Number(event.target.value))}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+            </select>
           </div>
           <div css={styles.sortBox}>
             <label htmlFor="sortBy">정렬</label>
@@ -85,6 +108,18 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
           </table>
         </div>
       )}
+
+      <div css={styles.pagination}>
+        <button type="button" onClick={handlePrevPage} disabled={page <= 1}>
+          이전
+        </button>
+        <span>
+          {page} / {totalPages}
+        </span>
+        <button type="button" onClick={() => handleNextPage(totalPages)} disabled={page >= totalPages}>
+          다음
+        </button>
+      </div>
     </div>
   )
 }
