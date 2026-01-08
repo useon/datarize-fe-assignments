@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react'
 import useCustomers from '../../hooks/useCustomers'
+import CustomerDetailModal from './CustomerDetailModal'
 import * as styles from './CustomersSection.styles'
 
 type CustomersSectionProps = {
@@ -13,6 +14,7 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
   const [name, setName] = useState('')
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(20)
+  const [selectedCustomer, setSelectedCustomer] = useState<{ id: number; name: string } | null>(null)
   const handleSortChange = (value: 'asc' | 'desc' | '') => setSortBy(value)
   const handleNameChange = (value: string) => setName(value)
   const handleLimitChange = (value: number) => {
@@ -30,6 +32,10 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
     limit,
   })
   const totalPages = data?.pagination.totalPages ?? 1
+  const handleRowClick = (id: number, customerName: string) => {
+    setSelectedCustomer({ id, name: customerName })
+  }
+  const handleCloseModal = () => setSelectedCustomer(null)
 
   return (
     <div css={styles.section}>
@@ -96,12 +102,12 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
               </tr>
             </thead>
             <tbody>
-              {data.data.map((customer) => (
-                <tr key={customer.id}>
-                  <td>{customer.id}</td>
-                  <td>{customer.name}</td>
-                  <td>{customer.count}</td>
-                  <td>{customer.totalAmount}</td>
+            {data.data.map((customer) => (
+              <tr key={customer.id} onClick={() => handleRowClick(customer.id, customer.name)}>
+                <td>{customer.id}</td>
+                <td>{customer.name}</td>
+                <td>{customer.count}</td>
+                <td>{customer.totalAmount}</td>
                 </tr>
               ))}
             </tbody>
@@ -120,6 +126,15 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
           다음
         </button>
       </div>
+
+      <CustomerDetailModal
+        isOpen={Boolean(selectedCustomer)}
+        customerId={selectedCustomer?.id}
+        customerName={selectedCustomer?.name}
+        from={from}
+        to={to}
+        onClose={handleCloseModal}
+      />
     </div>
   )
 }

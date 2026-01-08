@@ -133,6 +133,14 @@ export const table = css`
   tr:last-of-type td {
     border-bottom: none;
   }
+
+  tbody tr {
+    cursor: pointer;
+  }
+
+  tbody tr:hover {
+    background: rgba(247, 255, 145, 0.18);
+  }
 `
 
 export const statusBox = css`
