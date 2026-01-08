@@ -7,6 +7,7 @@ type UseCustomersParams = {
   page?: number
   limit?: number
   sortBy?: 'asc' | 'desc'
+  name?: string
 }
 
 const isDateRangeReady = (from?: string, to?: string) => {
@@ -15,12 +16,12 @@ const isDateRangeReady = (from?: string, to?: string) => {
   return (hasFrom && hasTo) || (!hasFrom && !hasTo)
 }
 
-const useCustomers = ({ from, to, page = 1, limit = 20, sortBy }: UseCustomersParams) => {
+const useCustomers = ({ from, to, page = 1, limit = 20, sortBy, name }: UseCustomersParams) => {
   const dateReady = isDateRangeReady(from, to)
 
   const query = useQuery({
-    queryKey: ['customers', { from: from ?? '', to: to ?? '', page, limit, sortBy: sortBy ?? '' }],
-    queryFn: () => getCustomers({ from, to, page, limit, sortBy }),
+    queryKey: ['customers', { from: from ?? '', to: to ?? '', page, limit, sortBy: sortBy ?? '', name: name ?? '' }],
+    queryFn: () => getCustomers({ from, to, page, limit, sortBy, name }),
     enabled: dateReady,
     staleTime: 20_000,
   })

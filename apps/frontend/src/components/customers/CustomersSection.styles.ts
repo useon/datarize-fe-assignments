@@ -29,6 +29,35 @@ export const titleRow = css`
   }
 `
 
+export const controls = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+`
+
+export const searchBox = css`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  input {
+    min-width: 200px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 14px;
+  }
+`
+
 export const sortBox = css`
   display: flex;
   flex-direction: column;

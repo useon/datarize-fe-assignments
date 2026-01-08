@@ -33,7 +33,7 @@ const styles = {
   `,
   grid: css`
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 20px;
 
     @media (max-width: 1100px) {

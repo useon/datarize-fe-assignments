@@ -6,6 +6,7 @@ type CustomersParams = {
   page?: number
   limit?: number
   sortBy?: 'asc' | 'desc'
+  name?: string
 }
 
 const buildUrl = (params: CustomersParams) => {
@@ -16,6 +17,9 @@ const buildUrl = (params: CustomersParams) => {
   }
   if (params.sortBy) {
     searchParams.set('sortBy', params.sortBy)
+  }
+  if (params.name) {
+    searchParams.set('name', params.name)
   }
   if (params.page) {
     searchParams.set('page', String(params.page))
