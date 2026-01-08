@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { useState } from 'react'
 import useCustomers from '../../hooks/useCustomers'
 import * as styles from './CustomersSection.styles'
 
@@ -8,7 +9,9 @@ type CustomersSectionProps = {
 }
 
 const CustomersSection = ({ from, to }: CustomersSectionProps) => {
-  const { data, isLoading, isError, dateReady } = useCustomers({ from, to })
+  const [sortBy, setSortBy] = useState<'asc' | 'desc' | ''>('')
+  const handleSortChange = (value: 'asc' | 'desc' | '') => setSortBy(value)
+  const { data, isLoading, isError, dateReady } = useCustomers({ from, to, sortBy: sortBy || undefined })
 
   if (!dateReady) {
     return <div css={[styles.statusBox, styles.statusError]}>시작일과 종료일을 모두 선택해 주세요.</div>
@@ -28,8 +31,24 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
 
   return (
     <div css={styles.section}>
-      <h2>고객 목록</h2>
-      <p>선택된 기간에 맞는 고객 목록입니다.</p>
+      <div css={styles.titleRow}>
+        <div>
+          <h2>고객 목록</h2>
+          <p>선택된 기간에 맞는 고객 목록입니다.</p>
+        </div>
+        <div css={styles.sortBox}>
+          <label htmlFor="sortBy">정렬</label>
+          <select
+            id="sortBy"
+            value={sortBy}
+            onChange={(event) => handleSortChange(event.target.value as 'asc' | 'desc' | '')}
+          >
+            <option value="">기본 (ID 오름차순)</option>
+            <option value="desc">구매 금액 높은 순</option>
+            <option value="asc">구매 금액 낮은 순</option>
+          </select>
+        </div>
+      </div>
 
       <div css={styles.tableWrapper}>
         <table css={styles.table}>
