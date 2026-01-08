@@ -17,6 +17,18 @@ export const section = css`
   }
 `
 
+export const titleRow = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+
 export const tableWrapper = css`
   margin-top: 16px;
   overflow: hidden;

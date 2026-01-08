@@ -15,16 +15,8 @@ const App = () => {
       header={
         <Header
           badge="Datarize"
-          title="Purchase Intelligence Dashboard"
-          description="Marketing-ready view into customer spending and purchase patterns."
-          right={
-            <DateRangeControl
-              from={from}
-              to={to}
-              onFromChange={setFrom}
-              onToChange={setTo}
-            />
-          }
+          title="쇼핑몰 구매 데이터 대시보드"
+          right={<DateRangeControl from={from} to={to} onFromChange={setFrom} onToChange={setTo} />}
         />
       }
     >

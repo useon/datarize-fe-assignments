@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import usePurchaseFrequency from '../../hooks/usePurchaseFrequency'
+import usePurchaseCsv from '../../hooks/usePurchaseCsv'
 import type { PurchaseFrequency } from '../../types'
+import Button from '../common/Button'
 import * as styles from './PurchaseFrequencySection.styles'
 
 type PurchaseFrequencySectionProps = {
@@ -34,6 +36,7 @@ const formatRangeLabel = (range: string) => {
 
 const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) => {
   const { data, isLoading, isError, dateReady } = usePurchaseFrequency({ from, to })
+  const { download, state, error } = usePurchaseCsv({ from, to })
 
   if (!dateReady) {
     return <div css={[styles.statusBox, styles.statusError]}>시작일과 종료일을 모두 선택해 주세요.</div>
@@ -53,8 +56,19 @@ const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) =
 
   return (
     <div css={styles.section}>
-      <h2>가격대별 구매 빈도</h2>
-      <p>가격 구간별 구매 횟수를 확인할 수 있습니다.</p>
+      <div css={styles.titleRow}>
+        <div>
+          <h2>가격대별 구매 빈도</h2>
+          <p>가격 구간별 구매 횟수를 확인할 수 있습니다.</p>
+        </div>
+        <Button type="button" onClick={download} disabled={state === 'loading'}>
+          {state === 'loading' ? 'CSV 준비 중...' : 'CSV 다운로드'}
+        </Button>
+      </div>
+
+      {state === 'error' && error && (
+        <div css={[styles.statusBox, styles.statusError]}>{error}</div>
+      )}
 
       <div css={styles.tableWrapper}>
         <table css={styles.table}>
