@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { useState } from 'react'
 import useCustomers from '../../../hooks/useCustomers'
 import CustomerDetailModal from '../CustomerDetailModal/CustomerDetailModal'

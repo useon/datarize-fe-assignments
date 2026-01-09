@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import useCustomerPurchases from '../../../hooks/useCustomerPurchases'
 import type { CustomerPurchase } from '../../../types'
 import * as styles from './CustomerDetailModal.styles'

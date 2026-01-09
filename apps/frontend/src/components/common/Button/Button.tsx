@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import type { ButtonHTMLAttributes } from 'react'
 import * as styles from './Button.styles'
 

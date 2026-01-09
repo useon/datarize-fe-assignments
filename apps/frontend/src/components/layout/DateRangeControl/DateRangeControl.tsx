@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import * as styles from './DateRangeControl.styles'
 
 type DateRangeControlProps = {

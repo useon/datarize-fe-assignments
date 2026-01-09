@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import usePurchaseFrequency from '../../../hooks/usePurchaseFrequency'
 import usePurchaseCsv from '../../../hooks/usePurchaseCsv'
 import type { PurchaseFrequency } from '../../../types'
