@@ -1,7 +1,10 @@
+import { Suspense } from 'react'
 import usePurchaseFrequency from '../../../hooks/usePurchaseFrequency'
 import usePurchaseCsv from '../../../hooks/usePurchaseCsv'
 import type { PurchaseFrequency } from '../../../types'
 import Button from '../../common/Button/Button'
+import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
+import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner'
 import * as styles from './PurchaseFrequencySection.styles'
 
 type PurchaseFrequencySectionProps = {
@@ -33,25 +36,39 @@ const formatRangeLabel = (range: string) => {
   return `${minLabel}만원 - ${maxLabel}만원`
 }
 
-const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) => {
-  const { data, isLoading, isError, dateReady } = usePurchaseFrequency({ from, to })
-  const { download, state, error } = usePurchaseCsv({ from, to })
-
-  if (!dateReady) {
-    return <div css={[styles.statusBox, styles.statusError]}>시작일과 종료일을 모두 선택해 주세요.</div>
-  }
-
-  if (isLoading) {
-    return <div css={styles.statusBox}>데이터를 불러오는 중입니다...</div>
-  }
-
-  if (isError) {
-    return <div css={[styles.statusBox, styles.statusError]}>데이터를 불러오지 못했습니다.</div>
-  }
+const PurchaseFrequencyContent = ({ from, to }: PurchaseFrequencySectionProps) => {
+  const { data } = usePurchaseFrequency({ from, to })
 
   if (!data || data.length === 0) {
     return <div css={styles.statusBox}>해당 기간에 데이터가 없습니다.</div>
   }
+
+  return (
+    <div css={styles.tableWrapper}>
+      <table css={styles.table}>
+        <thead>
+          <tr>
+            <th>가격대</th>
+            <th>구매 빈도</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item: PurchaseFrequency) => (
+            <tr key={item.range}>
+              <td>{formatRangeLabel(item.range)}</td>
+              <td>{item.count}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) => {
+  const { download, state, error } = usePurchaseCsv({ from, to })
+  const dateReady = (from && to) || (!from && !to)
+  const resetKey = `${from ?? ''}-${to ?? ''}`
 
   return (
     <div css={styles.section}>
@@ -65,28 +82,20 @@ const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) =
         </Button>
       </div>
 
-      {state === 'error' && error && (
-        <div css={[styles.statusBox, styles.statusError]}>{error}</div>
-      )}
+      {state === 'error' && error && <div css={[styles.statusBox, styles.statusError]}>{error}</div>}
 
-      <div css={styles.tableWrapper}>
-        <table css={styles.table}>
-          <thead>
-            <tr>
-              <th>가격대</th>
-              <th>구매 빈도</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item: PurchaseFrequency) => (
-              <tr key={item.range}>
-                <td>{formatRangeLabel(item.range)}</td>
-                <td>{item.count}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {!dateReady ? (
+        <div css={[styles.statusBox, styles.statusError]}>시작일과 종료일을 모두 선택해 주세요.</div>
+      ) : (
+        <ErrorBoundary
+          resetKey={resetKey}
+          fallback={<div css={[styles.statusBox, styles.statusError]}>데이터를 불러오지 못했습니다.</div>}
+        >
+          <Suspense fallback={<LoadingSpinner label="구매 빈도 데이터를 불러오는 중입니다..." />}>
+            <PurchaseFrequencyContent from={from} to={to} />
+          </Suspense>
+        </ErrorBoundary>
+      )}
     </div>
   )
 }
