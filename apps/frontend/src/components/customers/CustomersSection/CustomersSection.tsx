@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react'
-import useCustomers from '../../hooks/useCustomers'
-import CustomerDetailModal from './CustomerDetailModal'
+import useCustomers from '../../../hooks/useCustomers'
+import CustomerDetailModal from '../CustomerDetailModal/CustomerDetailModal'
 import * as styles from './CustomersSection.styles'
 
 type CustomersSectionProps = {
@@ -102,12 +102,12 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
               </tr>
             </thead>
             <tbody>
-            {data.data.map((customer) => (
-              <tr key={customer.id} onClick={() => handleRowClick(customer.id, customer.name)}>
-                <td>{customer.id}</td>
-                <td>{customer.name}</td>
-                <td>{customer.count}</td>
-                <td>{customer.totalAmount}</td>
+              {data.data.map((customer) => (
+                <tr key={customer.id} onClick={() => handleRowClick(customer.id, customer.name)}>
+                  <td>{customer.id}</td>
+                  <td>{customer.name}</td>
+                  <td>{customer.count}</td>
+                  <td>{customer.totalAmount}</td>
                 </tr>
               ))}
             </tbody>

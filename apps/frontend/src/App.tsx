@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import Layout from './components/layout/Layout'
-import Header from './components/layout/Header'
-import DateRangeControl from './components/layout/DateRangeControl'
-import PurchaseFrequencySection from './components/purchase/PurchaseFrequencySection'
-import CustomersSection from './components/customers/CustomersSection'
+import Layout from './components/layout/Layout/Layout'
+import Header from './components/layout/Header/Header'
+import DateRangeControl from './components/layout/DateRangeControl/DateRangeControl'
+import PurchaseFrequencySection from './components/purchase/PurchaseFrequencySection/PurchaseFrequencySection'
+import CustomersSection from './components/customers/CustomersSection/CustomersSection'
 import { normalizeDateRange } from './utils/dateRange'
 
 const App = () => {

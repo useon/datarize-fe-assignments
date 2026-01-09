@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import useCustomerPurchases from '../../hooks/useCustomerPurchases'
-import type { CustomerPurchase } from '../../types'
+import useCustomerPurchases from '../../../hooks/useCustomerPurchases'
+import type { CustomerPurchase } from '../../../types'
 import * as styles from './CustomerDetailModal.styles'
 
 type CustomerDetailModalProps = {
@@ -12,7 +12,14 @@ type CustomerDetailModalProps = {
   onClose: () => void
 }
 
-const CustomerDetailModal = ({ isOpen, customerId, customerName, from, to, onClose }: CustomerDetailModalProps) => {
+const CustomerDetailModal = ({
+  isOpen,
+  customerId,
+  customerName,
+  from,
+  to,
+  onClose,
+}: CustomerDetailModalProps) => {
   const { data, isLoading, isError, dateReady, enabled } = useCustomerPurchases({
     customerId,
     from,
@@ -35,16 +42,20 @@ const CustomerDetailModal = ({ isOpen, customerId, customerName, from, to, onClo
             <p>{periodLabel}</p>
           </div>
           <button type="button" css={styles.closeButton} onClick={onClose}>
-            X
+            ×
           </button>
         </div>
         <div css={styles.body}>
-          {!dateReady && <div css={[styles.statusBox, styles.statusError]}>시작일과 종료일을 모두 선택해 주세요.</div>}
+          {!dateReady && (
+            <div css={[styles.statusBox, styles.statusError]}>시작일과 종료일을 모두 선택해 주세요.</div>
+          )}
           {enabled && isLoading && <div css={styles.statusBox}>구매 내역을 불러오는 중입니다...</div>}
           {enabled && isError && (
             <div css={[styles.statusBox, styles.statusError]}>구매 내역을 불러오지 못했습니다.</div>
           )}
-          {enabled && data && data.length === 0 && <div css={styles.statusBox}>해당 기간에 구매 내역이 없습니다.</div>}
+          {enabled && data && data.length === 0 && (
+            <div css={styles.statusBox}>해당 기간에 구매 내역이 없습니다.</div>
+          )}
           {enabled && data && data.length > 0 && (
             <div>
               {data.map((purchase: CustomerPurchase, index) => (

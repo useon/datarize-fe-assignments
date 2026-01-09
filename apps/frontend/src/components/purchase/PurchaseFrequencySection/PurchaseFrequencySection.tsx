@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import usePurchaseFrequency from '../../hooks/usePurchaseFrequency'
-import usePurchaseCsv from '../../hooks/usePurchaseCsv'
-import type { PurchaseFrequency } from '../../types'
-import Button from '../common/Button'
+import usePurchaseFrequency from '../../../hooks/usePurchaseFrequency'
+import usePurchaseCsv from '../../../hooks/usePurchaseCsv'
+import type { PurchaseFrequency } from '../../../types'
+import Button from '../../common/Button/Button'
 import * as styles from './PurchaseFrequencySection.styles'
 
 type PurchaseFrequencySectionProps = {
