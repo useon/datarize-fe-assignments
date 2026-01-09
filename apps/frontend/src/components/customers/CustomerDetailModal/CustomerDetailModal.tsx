@@ -1,11 +1,11 @@
 import { Suspense } from 'react'
-import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import useCustomerPurchases from '../../../hooks/useCustomerPurchases'
 import type { CustomerPurchase } from '../../../types'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
 import ErrorFallback from '../../common/ErrorFallback/ErrorFallback'
 import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner'
-import { isDateRangeReady } from '../../../utils/dateRangeReady'
+import useCustomerDetailMeta from './hooks/useCustomerDetailMeta'
+import useCustomerDetailRetry from './hooks/useCustomerDetailRetry'
 import * as styles from './CustomerDetailModal.styles'
 
 type CustomerDetailModalProps = {
@@ -60,11 +60,8 @@ const CustomerDetailModal = ({
     return null
   }
 
-  const { reset } = useQueryErrorResetBoundary()
-  const dateReady = isDateRangeReady(from, to)
-  const title = customerName ? `${customerName} 구매 내역` : '고객 구매 내역'
-  const periodLabel = from && to ? `${from} ~ ${to}` : '전체 기간'
-  const resetKey = `${customerId ?? 0}-${from ?? ''}-${to ?? ''}`
+  const { title, periodLabel, dateReady } = useCustomerDetailMeta({ customerName, from, to })
+  const { reset, resetKey } = useCustomerDetailRetry({ customerId, from, to })
 
   return (
     <div css={styles.overlay} role="dialog" aria-modal="true">
