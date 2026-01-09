@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import usePurchaseFrequency from '../../../hooks/usePurchaseFrequency'
 import usePurchaseCsv from '../../../hooks/usePurchaseCsv'
 import type { PurchaseFrequency } from '../../../types'
@@ -8,35 +7,13 @@ import Button from '../../common/Button/Button'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
 import ErrorFallback from '../../common/ErrorFallback/ErrorFallback'
 import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner'
+import usePurchaseFrequencyRetry from './hooks/usePurchaseFrequencyRetry'
+import formatRangeLabel from './utils/formatRangeLabel'
 import * as styles from './PurchaseFrequencySection.styles'
 
 type PurchaseFrequencySectionProps = {
   from?: string
   to?: string
-}
-
-const formatRangeLabel = (range: string) => {
-  const [minRaw, maxRaw] = range.split(' - ')
-  const min = Number(minRaw)
-  const max = maxRaw === 'Infinity' ? null : Number(maxRaw)
-
-  if (!Number.isFinite(min)) {
-    return range
-  }
-
-  if (max === null) {
-    const minLabel = Math.floor((min - 1) / 10000)
-    return `${minLabel}만원 이상`
-  }
-
-  if (min === 0) {
-    const maxLabel = Math.floor(max / 10000)
-    return `${maxLabel}만원 이하`
-  }
-
-  const minLabel = Math.floor(min / 10000)
-  const maxLabel = Math.floor(max / 10000)
-  return `${minLabel}만원 - ${maxLabel}만원`
 }
 
 const PurchaseFrequencyContent = ({ from, to }: PurchaseFrequencySectionProps) => {
@@ -70,9 +47,8 @@ const PurchaseFrequencyContent = ({ from, to }: PurchaseFrequencySectionProps) =
 
 const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) => {
   const { download, state, error } = usePurchaseCsv({ from, to })
-  const { reset } = useQueryErrorResetBoundary()
+  const { reset, resetKey } = usePurchaseFrequencyRetry({ from, to })
   const dateReady = isDateRangeReady(from, to)
-  const resetKey = `${from ?? ''}-${to ?? ''}`
 
   return (
     <div css={styles.section}>
