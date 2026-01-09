@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import usePurchaseFrequency from '../../../hooks/usePurchaseFrequency'
 import usePurchaseCsv from '../../../hooks/usePurchaseCsv'
 import type { PurchaseFrequency } from '../../../types'
@@ -69,14 +69,9 @@ const PurchaseFrequencyContent = ({ from, to }: PurchaseFrequencySectionProps) =
 
 const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) => {
   const { download, state, error } = usePurchaseCsv({ from, to })
-  const queryClient = useQueryClient()
+  const { reset } = useQueryErrorResetBoundary()
   const dateReady = (from && to) || (!from && !to)
   const resetKey = `${from ?? ''}-${to ?? ''}`
-  const handleRetry = () => {
-    queryClient.invalidateQueries({
-      queryKey: ['purchase-frequency', { from: from ?? '', to: to ?? '' }],
-    })
-  }
 
   return (
     <div css={styles.section}>
@@ -97,7 +92,8 @@ const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) =
       ) : (
         <ErrorBoundary
           resetKey={resetKey}
-          fallback={<ErrorFallback message="구매 빈도 데이터를 불러오지 못했습니다." onRetry={handleRetry} />}
+          onReset={reset}
+          fallback={<ErrorFallback message="구매 빈도 데이터를 불러오지 못했습니다." onRetry={reset} />}
         >
           <Suspense fallback={<LoadingSpinner label="구매 빈도 데이터를 불러오는 중입니다..." />}>
             <PurchaseFrequencyContent from={from} to={to} />

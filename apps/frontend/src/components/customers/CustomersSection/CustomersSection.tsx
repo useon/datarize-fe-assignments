@@ -1,5 +1,5 @@
 import { Suspense, useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import useCustomers from '../../../hooks/useCustomers'
 import CustomerDetailModal from '../CustomerDetailModal/CustomerDetailModal'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
@@ -105,7 +105,7 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(20)
   const [selectedCustomer, setSelectedCustomer] = useState<{ id: number; name: string } | null>(null)
-  const queryClient = useQueryClient()
+  const { reset } = useQueryErrorResetBoundary()
   const handleSortChange = (value: 'asc' | 'desc' | '') => setSortBy(value)
   const handleNameChange = (value: string) => setName(value)
   const handleLimitChange = (value: number) => {
@@ -118,21 +118,6 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
     setSelectedCustomer({ id, name: customerName })
   }
   const handleCloseModal = () => setSelectedCustomer(null)
-  const handleRetry = () => {
-    queryClient.invalidateQueries({
-      queryKey: [
-        'customers',
-        {
-          from: from ?? '',
-          to: to ?? '',
-          page,
-          limit,
-          sortBy: sortBy ?? '',
-          name: name ?? '',
-        },
-      ],
-    })
-  }
   const dateReady = (from && to) || (!from && !to)
   const resetKey = `${from ?? ''}-${to ?? ''}-${page}-${limit}-${sortBy}-${name}`
 
@@ -186,9 +171,8 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
       ) : (
         <ErrorBoundary
           resetKey={resetKey}
-          fallback={
-            <ErrorFallback message="고객 목록을 불러오지 못했습니다." onRetry={handleRetry} />
-          }
+          onReset={reset}
+          fallback={<ErrorFallback message="고객 목록을 불러오지 못했습니다." onRetry={reset} />}
         >
           <Suspense fallback={<LoadingSpinner label="고객 데이터를 불러오는 중입니다..." />}>
             <CustomersData

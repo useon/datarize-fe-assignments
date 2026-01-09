@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import useCustomerPurchases from '../../../hooks/useCustomerPurchases'
 import type { CustomerPurchase } from '../../../types'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
@@ -59,17 +59,11 @@ const CustomerDetailModal = ({
     return null
   }
 
-  const queryClient = useQueryClient()
+  const { reset } = useQueryErrorResetBoundary()
   const dateReady = (from && to) || (!from && !to)
   const title = customerName ? `${customerName} 구매 내역` : '고객 구매 내역'
   const periodLabel = from && to ? `${from} ~ ${to}` : '전체 기간'
   const resetKey = `${customerId ?? 0}-${from ?? ''}-${to ?? ''}`
-  const handleRetry = () => {
-    if (!customerId) return
-    queryClient.invalidateQueries({
-      queryKey: ['customer-purchases', { customerId, from: from ?? '', to: to ?? '' }],
-    })
-  }
 
   return (
     <div css={styles.overlay} role="dialog" aria-modal="true">
@@ -91,9 +85,8 @@ const CustomerDetailModal = ({
           ) : (
             <ErrorBoundary
               resetKey={resetKey}
-              fallback={
-                <ErrorFallback message="구매 내역을 불러오지 못했습니다." onRetry={handleRetry} />
-              }
+              onReset={reset}
+              fallback={<ErrorFallback message="구매 내역을 불러오지 못했습니다." onRetry={reset} />}
             >
               <Suspense fallback={<LoadingSpinner label="구매 내역을 불러오는 중입니다..." />}>
                 <CustomerPurchasesContent customerId={customerId} from={from} to={to} />

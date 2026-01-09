@@ -4,6 +4,7 @@ import { Component } from 'react'
 type ErrorBoundaryProps = {
   fallback: ReactNode
   resetKey?: string
+  onReset?: () => void
   children: ReactNode
 }
 
@@ -21,6 +22,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   componentDidUpdate(prevProps: ErrorBoundaryProps) {
     if (prevProps.resetKey !== this.props.resetKey && this.state.hasError) {
       this.setState({ hasError: false })
+      this.props.onReset?.()
     }
   }
 
