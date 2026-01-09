@@ -5,6 +5,7 @@ import CustomerDetailModal from '../CustomerDetailModal/CustomerDetailModal'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
 import ErrorFallback from '../../common/ErrorFallback/ErrorFallback'
 import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner'
+import { isDateRangeReady } from '../../../utils/dateRangeReady'
 import * as styles from './CustomersSection.styles'
 
 type CustomersSectionProps = {
@@ -118,7 +119,7 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
     setSelectedCustomer({ id, name: customerName })
   }
   const handleCloseModal = () => setSelectedCustomer(null)
-  const dateReady = (from && to) || (!from && !to)
+  const dateReady = isDateRangeReady(from, to)
   const resetKey = `${from ?? ''}-${to ?? ''}-${page}-${limit}-${sortBy}-${name}`
 
   return (

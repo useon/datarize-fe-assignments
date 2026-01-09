@@ -3,6 +3,7 @@ import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import usePurchaseFrequency from '../../../hooks/usePurchaseFrequency'
 import usePurchaseCsv from '../../../hooks/usePurchaseCsv'
 import type { PurchaseFrequency } from '../../../types'
+import { isDateRangeReady } from '../../../utils/dateRangeReady'
 import Button from '../../common/Button/Button'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
 import ErrorFallback from '../../common/ErrorFallback/ErrorFallback'
@@ -70,7 +71,7 @@ const PurchaseFrequencyContent = ({ from, to }: PurchaseFrequencySectionProps) =
 const PurchaseFrequencySection = ({ from, to }: PurchaseFrequencySectionProps) => {
   const { download, state, error } = usePurchaseCsv({ from, to })
   const { reset } = useQueryErrorResetBoundary()
-  const dateReady = (from && to) || (!from && !to)
+  const dateReady = isDateRangeReady(from, to)
   const resetKey = `${from ?? ''}-${to ?? ''}`
 
   return (

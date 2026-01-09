@@ -5,6 +5,7 @@ import type { CustomerPurchase } from '../../../types'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
 import ErrorFallback from '../../common/ErrorFallback/ErrorFallback'
 import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner'
+import { isDateRangeReady } from '../../../utils/dateRangeReady'
 import * as styles from './CustomerDetailModal.styles'
 
 type CustomerDetailModalProps = {
@@ -60,7 +61,7 @@ const CustomerDetailModal = ({
   }
 
   const { reset } = useQueryErrorResetBoundary()
-  const dateReady = (from && to) || (!from && !to)
+  const dateReady = isDateRangeReady(from, to)
   const title = customerName ? `${customerName} 구매 내역` : '고객 구매 내역'
   const periodLabel = from && to ? `${from} ~ ${to}` : '전체 기간'
   const resetKey = `${customerId ?? 0}-${from ?? ''}-${to ?? ''}`
