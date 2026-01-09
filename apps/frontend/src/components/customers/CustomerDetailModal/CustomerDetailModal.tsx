@@ -6,6 +6,8 @@ import ErrorFallback from '../../common/ErrorFallback/ErrorFallback'
 import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner'
 import useCustomerDetailMeta from './hooks/useCustomerDetailMeta'
 import useCustomerDetailRetry from './hooks/useCustomerDetailRetry'
+import useLockBodyScroll from '../../../hooks/useLockBodyScroll'
+import useOverlayClose from '../../../hooks/useOverlayClose'
 import * as styles from './CustomerDetailModal.styles'
 
 type CustomerDetailModalProps = {
@@ -56,6 +58,9 @@ const CustomerDetailModal = ({
   to,
   onClose,
 }: CustomerDetailModalProps) => {
+  useLockBodyScroll(isOpen)
+  const { handleOverlayClick, handleContentClick } = useOverlayClose(onClose)
+
   if (!isOpen) {
     return null
   }
@@ -64,8 +69,8 @@ const CustomerDetailModal = ({
   const { reset, resetKey } = useCustomerDetailRetry({ customerId, from, to })
 
   return (
-    <div css={styles.overlay} role="dialog" aria-modal="true">
-      <div css={styles.modal}>
+    <div css={styles.overlay} role="dialog" aria-modal="true" onClick={handleOverlayClick}>
+      <div css={styles.modal} onClick={handleContentClick}>
         <div css={styles.header}>
           <div css={styles.titleBlock}>
             <h3>{title}</h3>
