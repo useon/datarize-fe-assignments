@@ -1,7 +1,10 @@
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import useCustomers from '../../../hooks/useCustomers'
 import CustomerDetailModal from '../CustomerDetailModal/CustomerDetailModal'
+import useCustomerFilters from './hooks/useCustomerFilters'
+import useCustomerPagination from './hooks/useCustomerPagination'
+import useCustomerSelection from './hooks/useCustomerSelection'
 import ErrorBoundary from '../../common/ErrorBoundary/ErrorBoundary'
 import ErrorFallback from '../../common/ErrorFallback/ErrorFallback'
 import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner'
@@ -13,7 +16,7 @@ type CustomersSectionProps = {
   to?: string
 }
 
-type CustomersDataProps = {
+type CustomersContentProps = {
   from?: string
   to?: string
   page: number
@@ -21,60 +24,21 @@ type CustomersDataProps = {
   sortBy: '' | 'asc' | 'desc'
   name: string
   onRowClick: (id: number, name: string) => void
-}
-
-const CustomersData = ({ from, to, page, limit, sortBy, name, onRowClick }: CustomersDataProps) => {
-  const { data } = useCustomers({
-    from,
-    to,
-    sortBy: sortBy || undefined,
-    name: name.trim() || undefined,
-    page,
-    limit,
-  })
-
-  if (!data || data.data.length === 0) {
-    return <div css={styles.statusBox}>해당 기간에 고객이 없습니다.</div>
-  }
-
-  return (
-    <div css={styles.tableWrapper}>
-      <table css={styles.table}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>이름</th>
-            <th>총 구매 횟수</th>
-            <th>총 구매 금액</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.data.map((customer) => (
-            <tr key={customer.id} onClick={() => onRowClick(customer.id, customer.name)}>
-              <td>{customer.id}</td>
-              <td>{customer.name}</td>
-              <td>{customer.count}</td>
-              <td>{customer.totalAmount}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-type CustomersPaginationProps = {
-  from?: string
-  to?: string
-  page: number
-  limit: number
-  sortBy: '' | 'asc' | 'desc'
-  name: string
   onPrev: () => void
   onNext: (totalPages: number) => void
 }
 
-const CustomersPagination = ({ from, to, page, limit, sortBy, name, onPrev, onNext }: CustomersPaginationProps) => {
+const CustomersContent = ({
+  from,
+  to,
+  page,
+  limit,
+  sortBy,
+  name,
+  onRowClick,
+  onPrev,
+  onNext,
+}: CustomersContentProps) => {
   const { data } = useCustomers({
     from,
     to,
@@ -85,42 +49,76 @@ const CustomersPagination = ({ from, to, page, limit, sortBy, name, onPrev, onNe
   })
   const totalPages = data?.pagination.totalPages ?? 1
 
+  if (!data || data.data.length === 0) {
+    return (
+      <>
+        <div css={styles.statusBox}>해당 기간에 고객이 없습니다.</div>
+        <div css={styles.pagination}>
+          <button type="button" onClick={onPrev} disabled={page <= 1}>
+            이전
+          </button>
+          <span>
+            {page} / {totalPages}
+          </span>
+          <button type="button" onClick={() => onNext(totalPages)} disabled={page >= totalPages}>
+            다음
+          </button>
+        </div>
+      </>
+    )
+  }
+
   return (
-    <div css={styles.pagination}>
-      <button type="button" onClick={onPrev} disabled={page <= 1}>
-        이전
-      </button>
-      <span>
-        {page} / {totalPages}
-      </span>
-      <button type="button" onClick={() => onNext(totalPages)} disabled={page >= totalPages}>
-        다음
-      </button>
-    </div>
+    <>
+      <div css={styles.tableWrapper}>
+        <table css={styles.table}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>이름</th>
+              <th>총 구매 횟수</th>
+              <th>총 구매 금액</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.data.map((customer) => (
+              <tr key={customer.id} onClick={() => onRowClick(customer.id, customer.name)}>
+                <td>{customer.id}</td>
+                <td>{customer.name}</td>
+                <td>{customer.count}</td>
+                <td>{customer.totalAmount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div css={styles.pagination}>
+        <button type="button" onClick={onPrev} disabled={page <= 1}>
+          이전
+        </button>
+        <span>
+          {page} / {totalPages}
+        </span>
+        <button type="button" onClick={() => onNext(totalPages)} disabled={page >= totalPages}>
+          다음
+        </button>
+      </div>
+    </>
   )
 }
 
 const CustomersSection = ({ from, to }: CustomersSectionProps) => {
-  const [sortBy, setSortBy] = useState<'asc' | 'desc' | ''>('')
-  const [name, setName] = useState('')
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(20)
-  const [selectedCustomer, setSelectedCustomer] = useState<{ id: number; name: string } | null>(null)
+  const { sortBy, name, limit, handleSortChange, handleNameChange, handleLimitChange } =
+    useCustomerFilters()
+  const { page, resetPage, handlePrevPage, handleNextPage } = useCustomerPagination()
+  const { selectedCustomer, handleRowClick, handleCloseModal } = useCustomerSelection()
   const { reset } = useQueryErrorResetBoundary()
-  const handleSortChange = (value: 'asc' | 'desc' | '') => setSortBy(value)
-  const handleNameChange = (value: string) => setName(value)
-  const handleLimitChange = (value: number) => {
-    setLimit(value)
-    setPage(1)
-  }
-  const handlePrevPage = () => setPage((prev) => Math.max(1, prev - 1))
-  const handleNextPage = (totalPages: number) => setPage((prev) => Math.min(totalPages, prev + 1))
-  const handleRowClick = (id: number, customerName: string) => {
-    setSelectedCustomer({ id, name: customerName })
-  }
-  const handleCloseModal = () => setSelectedCustomer(null)
   const dateReady = isDateRangeReady(from, to)
   const resetKey = `${from ?? ''}-${to ?? ''}-${page}-${limit}-${sortBy}-${name}`
+
+  useEffect(() => {
+    resetPage()
+  }, [sortBy, name, limit, resetPage])
 
   return (
     <div css={styles.section}>
@@ -176,7 +174,7 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
           fallback={<ErrorFallback message="고객 목록을 불러오지 못했습니다." onRetry={reset} />}
         >
           <Suspense fallback={<LoadingSpinner label="고객 데이터를 불러오는 중입니다..." />}>
-            <CustomersData
+            <CustomersContent
               from={from}
               to={to}
               page={page}
@@ -184,16 +182,6 @@ const CustomersSection = ({ from, to }: CustomersSectionProps) => {
               sortBy={sortBy}
               name={name}
               onRowClick={handleRowClick}
-            />
-          </Suspense>
-          <Suspense fallback={<div css={styles.pagination} />}>
-            <CustomersPagination
-              from={from}
-              to={to}
-              page={page}
-              limit={limit}
-              sortBy={sortBy}
-              name={name}
               onPrev={handlePrevPage}
               onNext={handleNextPage}
             />
